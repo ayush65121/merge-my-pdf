@@ -171,7 +171,7 @@ mergeBtn.addEventListener('click', async () => {
         
         // Send to backend
         // IMPORTANT: Replace with your actual backend URL
-        const response = await fetch('https://merge-my-pdf-backend-1.onrender.com', {
+        const response = await fetch("https://merge-my-pdf-backend-1.onrender.com/merge", {
             method: 'POST',
             body: formData
         });
