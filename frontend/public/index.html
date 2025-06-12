@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge My PDF - Free Online PDF Merger</title>
+    <meta name="description" content="Merge multiple PDF files into one document for free. No registration required. Secure and easy to use.">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Merge PDF Files - Free Online PDF Merger">
+    <meta property="og:description" content="Merge multiple PDF files into one document for free. No registration required. Secure and easy to use.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:image" content="https://yourdomain.com/social-image.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Merge PDF Files - Free Online PDF Merger">
+    <meta name="twitter:description" content="Merge multiple PDF files into one document for free. No registration required. Secure and easy to use.">
+    <meta name="twitter:image" content="https://yourdomain.com/social-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361ee',
+                        primaryDark: '#3a56d4',
+                        secondary: '#7209b7',
+                        light: '#f8f9fa',
+                        dark: '#212529',
+                        gray: '#6c757d',
+                        lightGray: '#e9ecef',
+                        success: '#4caf50',
+                        danger: '#f44336',
+                    },
+                    boxShadow: {
+                        'custom': '0 4px 12px rgba(0,0,0,0.1)',
+                    },
+                    borderRadius: {
+                        'custom': '8px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/src/assets/style.css">
+</head>
+<body class="bg-light dark:bg-dark">
+    <header class="bg-gradient-to-r from-primary to-secondary text-white py-4 shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                <div class="logo flex items-center gap-3 text-2xl font-bold">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>PDF Merger</span>
+                </div>
+                <button id="themeToggle" class="mt-4 md:mt-0 bg-white/20 hover:bg-white/30 rounded-full px-4 py-2 flex items-center gap-2 transition">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4">
+        <!-- Ad Banner -->
+        <div class="ad-banner bg-lightGray dark:bg-light-gray rounded-lg shadow-custom my-6 flex items-center justify-center text-gray-500 font-medium h-24">
+            Advertisement Banner (728x90)
+        </div>
+        
+        <div class="main-content grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <main class="lg:col-span-3">
+                <div class="tool-container bg-white dark:bg-gray-800 rounded-lg shadow-custom p-6 transition">
+                    <h1 class="tool-title text-2xl md:text-3xl font-bold text-center text-primary mb-6">
+                        <i class="fas fa-compress-alt mr-2"></i>Merge PDF Files
+                    </h1>
+                    
+                    <div id="dropZone" class="upload-container border-2 border-dashed border-light-gray rounded-lg p-8 text-center cursor-pointer transition relative">
+                        <div class="upload-icon text-primary text-5xl mb-4">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <p class="upload-text text-lg">Drag & drop your PDF files here</p>
+                        <p class="upload-text text-lg">or</p>
+                        <button id="browseBtn" class="browse-btn bg-primary text-white rounded-full px-6 py-2 font-semibold transition inline-block mt-4">
+                            Browse Files
+                        </button>
+                        <input type="file" id="fileInput" class="hidden" accept=".pdf" multiple>
+                        <div id="fileInfo" class="file-info mt-4 bg-light-gray dark:bg-gray-700 rounded-lg p-3 text-left hidden">
+                            <i class="fas fa-check-circle text-success mr-2"></i>
+                            <span id="fileCount">0 files selected</span>
+                        </div>
+                    </div>
+                    
+                    <div id="fileList" class="mt-4 hidden">
+                        <h3 class="font-semibold mb-2">Selected Files:</h3>
+                        <ul id="fileListItems" class="list-disc pl-5 max-h-40 overflow-y-auto"></ul>
+                    </div>
+                    
+                    <div id="controls" class="compression-controls mt-6">
+                        <button id="mergeBtn" class="action-btn bg-primary text-white rounded-lg py-3 font-semibold w-full flex items-center justify-center gap-2">
+                            <i class="fas fa-compress-alt"></i> Merge PDFs
+                        </button>
+                    </div>
+                    
+                    <div id="progressContainer" class="progress-container mt-6 hidden">
+                        <div class="progress-bar bg-light-gray dark:bg-gray-700 rounded-full h-3">
+                            <div id="progressFill" class="progress-fill bg-primary rounded-full h-full w-0 transition-all"></div>
+                        </div>
+                        <p id="progressText" class="progress-text mt-2">Processing your files...</p>
+                    </div>
+                    
+                    <div id="results" class="results-container mt-6 pt-6 border-t border-light-gray dark:border-gray-700 hidden">
+                        <h2 class="results-title text-xl md:text-2xl font-bold text-center text-primary mb-6">
+                            Merge Complete!
+                        </h2>
+                        <div class="file-stats grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="file-stat bg-light-gray dark:bg-gray-700 rounded-lg p-4 text-center shadow-custom">
+                                <div class="file-stat-title text-gray-500 dark:text-gray-300">Files Merged</div>
+                                <div id="filesMerged" class="file-stat-value text-primary text-2xl font-bold">0</div>
+                            </div>
+                            <div class="file-stat bg-light-gray dark:bg-gray-700 rounded-lg p-4 text-center shadow-custom">
+                                <div class="file-stat-title text-gray-500 dark:text-gray-300">Merged File Size</div>
+                                <div id="mergedSize" class="file-stat-value text-primary text-2xl font-bold">0 KB</div>
+                            </div>
+                        </div>
+                        
+                        <button id="downloadBtn" class="download-btn action-btn bg-success text-white rounded-lg py-3 font-semibold w-full flex items-center justify-center gap-2">
+                            <i class="fas fa-download"></i> Download Merged PDF
+                        </button>
+                    </div>
+                </div>
+            </main>
+            
+            <aside class="lg:col-span-1">
+                <div class="ad-sidebar bg-light-gray dark:bg-gray-700 rounded-lg shadow-custom p-6 flex items-center justify-center text-gray-500 font-medium min-h-[300px]">
+                    Advertisement Sidebar (300x250)
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white mt-12 py-10">
+        <div class="container mx-auto px-4">
+            <div class="footer-content grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="footer-section">
+                    <h3 class="footer-heading text-xl font-semibold mb-4 text-primary">PDF Merger</h3>
+                    <p class="text-gray-300">Free online tool to merge multiple PDF files into one document. No installation required.</p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-heading text-xl font-semibold mb-4 text-primary">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">Home</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">How to Use</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-heading text-xl font-semibold mb-4 text-primary">Tools</h3>
+                    <ul class="footer-links">
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">PDF Compressor</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">PDF Splitter</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">PDF Converter</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-300 hover:text-primary transition">PDF Editor</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright text-center pt-6 border-t border-gray-700 text-gray-400">
+                &copy; 2023 PDF Merger. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <button id="feedbackBtn" class="feedback-btn fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center text-xl z-50 transition">
+        <i class="fas fa-comment-alt"></i>
+    </button>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PDF Merger",
+        "description": "Free online tool to merge multiple PDF files into one document",
+        "url": "https://yourdomain.com",
+        "applicationCategory": "Utility",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+
+    <!-- Google Analytics Placeholder -->
+    <script>
+        // Google Analytics (replace with your own ID)
+        // window.dataLayer = window.dataLayer || [];
+        // function gtag(){dataLayer.push(arguments);}
+        // gtag('js', new Date());
+        // gtag('config', 'UA-XXXXX-Y');
+    </script>
+
+    <script src="/src/script.js"></script>
+</body>
+</html>
